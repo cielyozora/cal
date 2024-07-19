@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elorahub - Subscription Refund Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
+  <link id="bootstrap-css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Roboto Flex', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+    .container {
+      margin-top: 70px; /* Adjusted for navbar */
+      padding-bottom: 50px; /* Added padding to ensure the whole form is visible */
+    }
+    h2, h6 {
+      font-family: 'Bona Nova SC', serif;
+    }
+    .form-control {
+      background-color: #333;
+      color: #fff;
+      border: none;
+    }
+    .form-control:focus {
+      background-color: #444;
+      color: #fff;
+      border-color: #555;
+      box-shadow: none;
+    }
+    .btn-primary {
+      background-color: #1f1f1f;
+      border-color: #333;
+    }
+    .btn-primary:hover {
+      background-color: #333;
+      border-color: #444;
+    }
+    .formula {
+      font-size: 0.8rem;
+      font-style: italic;
+      color: #bbb;
+      margin-top: 20px;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+      color: black; /* Make navbar text black */
+    }
+    .navbar-dark .navbar-toggler {
+      color: black; /* Make navbar toggler icon black */
+      border-color: black; /* Make navbar toggler border black */
+    }
+    /* Color Classes */
+    .first-color {
+      background: #f5f410;
+    }
+    /* Footer Styles */
+    footer {
+      background-color: #495057;
+      color: #f8f9fa;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-dark first-color">
+    <a class="navbar-brand" href="#" style="color:black;"><strong>Elorahub</strong></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://t.me/exiodi">About</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Container for the form -->
+  <div class="container">
+    <h2 class="text-center">Subscription Refund Calculator</h2>
+    <h6 class="text-center"><small><em>Subscription refund calculator</em></small></h6>
+    <form id="refundForm">
+      <div class="form-group">
+        <label for="price">Subscription Price</label>
+        <input type="number" class="form-control" id="price" placeholder="Enter subscription price">
+      </div>
+      <div class="form-group">
+        <label for="totalDays">Total Subscription Days</label>
+        <input type="number" class="form-control" id="totalDays" placeholder="Enter total subscription days">
+      </div>
+      <div class="form-group">
+        <label for="remainingDays">Remaining Days</label>
+        <input type="number" class="form-control" id="remainingDays" placeholder="Enter remaining days">
+      </div>
+      <div class="form-group">
+        <label for="serviceFee">Service Fee (%) (optional)</label>
+        <input type="number" class="form-control" id="serviceFee" placeholder="Enter service fee percentage (optional) e.g 10">
+      </div>
+      <button type="button" class="btn btn-primary btn-block" onclick="calculateRefund()">Calculate Refund</button>
+    </form>
+    <div class="mt-4">
+      <h5 id="result" class="text-center"></h5>
+      <h5 id="dailyRate" class="text-center"></h5>
+    </div>
+    <div class="mt-4">
+      
+    </div>
+    <div class="formula text-center">
+      <p><small><em>Refund Amount = ((Subscription Price / Total Subscription Days) * Remaining Days) - (Service Fee % of Subscription Price)</em></small></p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2024 Elorahub. All rights reserved.
+  </footer>
+
+  <script>
+    function calculateRefund() {
+      var price = document.getElementById('price').value;
+      var totalDays = document.getElementById('totalDays').value;
+      var remainingDays = document.getElementById('remainingDays').value;
+      var serviceFeePercent = document.getElementById('serviceFee').value || 0;
+
+      if (price && totalDays && remainingDays) {
+        var dailyRate = price / totalDays;
+        var serviceFee = (serviceFeePercent / 100) * price;
+        var refundAmount = (dailyRate * remainingDays) - serviceFee;
+        document.getElementById('result').innerText = 'Refund Amount: ₱' + refundAmount.toFixed(2);
+        document.getElementById('dailyRate').innerText = 'Daily Rate: ₱' + dailyRate.toFixed(2);
+      } else {
+        document.getElementById('result').innerText = 'Please fill in all fields.';
+        document.getElementById('dailyRate').innerText = '';
+      }
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
