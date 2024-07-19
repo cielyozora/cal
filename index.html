@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elorahub - Calculators</title>
+  <title>Elorahub - Telegram Standard Refund Calculator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
@@ -18,8 +18,8 @@
       color: #e0e0e0;
     }
     .container {
-      margin-top: 15px;
-      padding-bottom: 10px;
+      margin-top: 70px; /* Adjusted for navbar */
+      padding-bottom: 50px; /* Added padding to ensure the whole form is visible */
     }
     h2, h6 {
       font-family: 'Bona Nova SC', serif;
@@ -50,15 +50,17 @@
       margin-top: 20px;
     }
     .navbar-dark .navbar-nav .nav-link {
-      color: black;
+      color: black; /* Make navbar text black */
     }
     .navbar-dark .navbar-toggler {
-      color: black;
-      border-color: black;
+      color: black; /* Make navbar toggler icon black */
+      border-color: black; /* Make navbar toggler border black */
     }
+    /* Color Classes */
     .first-color {
       background: #f5f410;
     }
+    /* Footer Styles */
     footer {
       background-color: #495057;
       color: #f8f9fa;
@@ -67,13 +69,6 @@
       bottom: 0;
       width: 100%;
       text-align: center;
-    }
-    .toggle-buttons {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
     }
   </style>
 </head>
@@ -96,76 +91,45 @@
     </div>
   </nav>
 
+  <!-- Container for the form -->
   <div class="container">
-    <div class="toggle-buttons">
-      <button class="btn btn-primary" onclick="showCalculator('refund')">Subscription Refund Calculator</button>
-      <button class="btn btn-primary" onclick="showCalculator('wage')">Reseller Wage Calculator</button>
+    <h4 class="text-center">Telegram Standard Refund Calculator</h4>
+    <h6 class="text-center"><small><em>Subscription refund calculator</em></small></h6>
+    <form id="refundForm">
+      <div class="form-group">
+        <label for="price">Subscription Price</label>
+        <input type="number" class="form-control" id="price" placeholder="Enter subscription price">
+      </div>
+      <div class="form-group">
+        <label for="totalDays">Total Subscription Days</label>
+        <input type="number" class="form-control" id="totalDays" placeholder="Enter total subscription days">
+      </div>
+      <div class="form-group">
+        <label for="remainingDays">Remaining Days</label>
+        <input type="number" class="form-control" id="remainingDays" placeholder="Enter remaining days">
+      </div>
+      <div class="form-group">
+        <label for="serviceFee">Service Fee (%) (optional)</label>
+        <input type="number" class="form-control" id="serviceFee" placeholder="Enter service fee percentage (optional) e.g 10">
+      </div>
+      <button type="button" class="btn btn-primary" onclick="calculateRefund()">Calculate Refund</button>
+      <button type="button" class="btn btn-primary ml-2" onclick="switchToResellerWage()">Reseller Wage Calculator</button>
+    </form>
+    <div class="mt-4">
+      <h5 id="result" class="text-center"></h5>
+      <h5 id="dailyRate" class="text-center"></h5>
     </div>
-
-    <div id="refundCalculator">
-      <h4 class="text-center">Telegram Standard Refund Calculator</h4>
-      <h6 class="text-center"><small><em>Subscription refund calculator</em></small></h6>
-      <form id="refundForm">
-        <div class="form-group">
-          <label for="price">Subscription Price</label>
-          <input type="number" class="form-control" id="price" placeholder="Enter subscription price">
-        </div>
-        <div class="form-group">
-          <label for="totalDays">Total Subscription Days</label>
-          <input type="number" class="form-control" id="totalDays" placeholder="Enter total subscription days">
-        </div>
-        <div class="form-group">
-          <label for="remainingDays">Remaining Days</label>
-          <input type="number" class="form-control" id="remainingDays" placeholder="Enter remaining days">
-        </div>
-        <div class="form-group">
-          <label for="serviceFee">Service Fee (%) (optional)</label>
-          <input type="number" class="form-control" id="serviceFee" placeholder="Enter service fee percentage (optional) e.g 10">
-        </div>
-        <button type="button" class="btn btn-primary btn-block" onclick="calculateRefund()">Calculate Refund</button>
-      </form>
-      <div class="mt-4">
-        <h5 id="result" class="text-center"></h5>
-        <h5 id="dailyRate" class="text-center"></h5>
-      </div>
-      <div class="formula text-center">
-        <p><small><em>Refund Amount = ((Subscription Price / Total Subscription Days) * Remaining Days) - (Service Fee % of Subscription Price)</em></small></p>
-      </div>
-    </div>
-
-    <div id="wageCalculator" style="display:none;">
-      <h4 class="text-center">Reseller Wage Calculator</h4>
-      <h6 class="text-center"><small><em>Calculate the wage of your reseller based on their total sales</em></small></h6>
-      <form id="wageForm">
-        <div class="form-group">
-          <label for="totalSales">Total Sales</label>
-          <input type="number" class="form-control" id="totalSales" placeholder="Enter total sales">
-        </div>
-        <div class="form-group">
-          <label for="commissionRate">Commission Rate (%)</label>
-          <input type="number" class="form-control" id="commissionRate" placeholder="Enter commission rate percentage">
-        </div>
-        <button type="button" class="btn btn-primary btn-block" onclick="calculateWage()">Calculate Wage</button>
-      </form>
-      <div class="mt-4">
-        <h5 id="wageResult" class="text-center"></h5>
-      </div>
-      <div class="formula text-center">
-        <p><small><em>Wage = Total Sales × Commission Rate</em></small></p>
-      </div>
+    <div class="formula text-center">
+      <p><small><em>Refund Amount = (Price / Total Days) × Remaining Days × 0.6</em></small></p>
     </div>
   </div>
 
+  <!-- Footer -->
   <footer>
     &copy; 2024 Elorahub. All rights reserved.
   </footer>
 
   <script>
-    function showCalculator(calculator) {
-      document.getElementById('refundCalculator').style.display = calculator === 'refund' ? 'block' : 'none';
-      document.getElementById('wageCalculator').style.display = calculator === 'wage' ? 'block' : 'none';
-    }
-
     function calculateRefund() {
       var price = document.getElementById('price').value;
       var totalDays = document.getElementById('totalDays').value;
@@ -173,10 +137,13 @@
       var serviceFeePercent = document.getElementById('serviceFee').value || 0;
 
       if (price && totalDays && remainingDays) {
-        var dailyRate = price / totalDays;
-        var serviceFee = (serviceFeePercent / 100) * price;
-        var refundAmount = (dailyRate * remainingDays) - serviceFee;
+        var refundAmount = (price / totalDays) * remainingDays * 0.6;
+        if (serviceFeePercent) {
+          var serviceFee = (serviceFeePercent / 100) * price;
+          refundAmount -= serviceFee;
+        }
         document.getElementById('result').innerText = 'Refund Amount: ₱' + refundAmount.toFixed(2);
+        var dailyRate = price / totalDays;
         document.getElementById('dailyRate').innerText = 'Daily Rate: ₱' + dailyRate.toFixed(2);
       } else {
         document.getElementById('result').innerText = 'Please fill in all fields.';
@@ -184,16 +151,8 @@
       }
     }
 
-    function calculateWage() {
-      var totalSales = document.getElementById('totalSales').value;
-      var commissionRate = document.getElementById('commissionRate').value;
-
-      if (totalSales && commissionRate) {
-        var wage = totalSales * (commissionRate / 100);
-        document.getElementById('wageResult').innerText = 'Wage: ₱' + wage.toFixed(2);
-      } else {
-        document.getElementById('wageResult').innerText = 'Please fill in all fields.';
-      }
+    function switchToResellerWage() {
+      window.location.href = 'wagecal.html'; // Replace with your reseller wage calculator page
     }
   </script>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
