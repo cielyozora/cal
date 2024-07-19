@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Elorahub - Telegram Standard Refund Calculator</title>
+  <title>Elorahub - Calculators</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bona+Nova+SC:ital,wght@0,400;0,700;1,400&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
@@ -18,10 +18,10 @@
       color: #e0e0e0;
     }
     .container {
-      margin-top: 70px; /* Adjusted for navbar */
-      padding-bottom: 50px; /* Added padding to ensure the whole form is visible */
+      margin-top: 15px; /* Adjusted for navbar */
+      padding-bottom: 10px; /* Added padding to ensure the whole form is visible */
     }
-    h2, h6 {
+    h2, h4, h6 {
       font-family: 'Bona Nova SC', serif;
     }
     .form-control {
@@ -91,8 +91,14 @@
     </div>
   </nav>
 
+  <!-- Navigation Buttons -->
+  <div class="container text-center">
+    <button class="btn btn-primary" onclick="showCalculator('refund')">Subscription Refund Calculator</button>
+    <button class="btn btn-primary" onclick="showCalculator('wage')">Reseller Wage Calculator</button>
+  </div>
+
   <!-- Container for the form -->
-  <div class="container">
+  <div class="container" id="refundCalculator">
     <h4 class="text-center">Telegram Standard Refund Calculator</h4>
     <h6 class="text-center"><small><em>Subscription refund calculator</em></small></h6>
     <form id="refundForm">
@@ -118,11 +124,31 @@
       <h5 id="result" class="text-center"></h5>
       <h5 id="dailyRate" class="text-center"></h5>
     </div>
-    <div class="mt-4">
-      
-    </div>
     <div class="formula text-center">
       <p><small><em>Refund Amount = ((Subscription Price / Total Subscription Days) * Remaining Days) - (Service Fee % of Subscription Price)</em></small></p>
+    </div>
+  </div>
+
+  <!-- Container for the wage form -->
+  <div class="container" id="wageCalculator" style="display:none;">
+    <h4 class="text-center">Reseller Wage Calculator</h4>
+    <h6 class="text-center"><small><em>Calculate the wage of your reseller based on their total sales</em></small></h6>
+    <form id="wageForm">
+      <div class="form-group">
+        <label for="totalSales">Total Sales</label>
+        <input type="number" class="form-control" id="totalSales" placeholder="Enter total sales">
+      </div>
+      <div class="form-group">
+        <label for="commissionRate">Commission Rate (%)</label>
+        <input type="number" class="form-control" id="commissionRate" placeholder="Enter commission rate">
+      </div>
+      <button type="button" class="btn btn-primary btn-block" onclick="calculateWage()">Calculate Wage</button>
+    </form>
+    <div class="mt-4">
+      <h5 id="wageResult" class="text-center"></h5>
+    </div>
+    <div class="formula text-center">
+      <p><small><em>Wage = Total Sales × Commission Rate</em></small></p>
     </div>
   </div>
 
@@ -132,6 +158,16 @@
   </footer>
 
   <script>
+    function showCalculator(calculator) {
+      if (calculator === 'refund') {
+        document.getElementById('refundCalculator').style.display = 'block';
+        document.getElementById('wageCalculator').style.display = 'none';
+      } else if (calculator === 'wage') {
+        document.getElementById('refundCalculator').style.display = 'none';
+        document.getElementById('wageCalculator').style.display = 'block';
+      }
+    }
+
     function calculateRefund() {
       var price = document.getElementById('price').value;
       var totalDays = document.getElementById('totalDays').value;
@@ -147,6 +183,18 @@
       } else {
         document.getElementById('result').innerText = 'Please fill in all fields.';
         document.getElementById('dailyRate').innerText = '';
+      }
+    }
+
+    function calculateWage() {
+      var totalSales = document.getElementById('totalSales').value;
+      var commissionRate = document.getElementById('commissionRate').value;
+
+      if (totalSales && commissionRate) {
+        var wage = totalSales * (commissionRate / 100);
+        document.getElementById('wageResult').innerText = 'Wage: ₱' + wage.toFixed(2);
+      } else {
+        document.getElementById('wageResult').innerText = 'Please fill in all fields.';
       }
     }
   </script>
